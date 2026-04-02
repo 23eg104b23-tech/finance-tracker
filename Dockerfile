@@ -5,10 +5,9 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # Stage 2: Runtime
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jre-focal
 WORKDIR /app
 COPY --from=build /app/target/tracker-0.0.1-SNAPSHOT.jar app.jar
 ENV SPRING_PROFILES_ACTIVE=prod
-# Use the port Render expects (default is 10000, but our app uses 8081; Render handles this via the PORT env var)
 EXPOSE 8081
 ENTRYPOINT ["java", "-jar", "app.jar"]
